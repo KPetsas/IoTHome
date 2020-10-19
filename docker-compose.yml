@@ -1,0 +1,62 @@
+version: '2'
+services:
+
+  iot_frontend_nginx:
+    build: ./webserver
+    container_name: iot_frontend_nginx
+    restart: always
+    depends_on:
+      - iot_backend_mqtt
+    networks:
+      - frontend
+    ports:
+      - 80:80
+      - 443:443
+
+  iot_backend_mqtt:
+    build: ./backend
+    container_name: iot_backend_mqtt
+    restart: always
+    environment:
+      - FLASK_APP=${FLASK_APP}
+      - PRODUCTION=${PRODUCTION}
+      - CACHE_ENABLED=${CACHE_ENABLED}
+      - LOG_DEBUG=${LOG_DEBUG}
+      - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - WIFI_SSID_PASS=${WIFI_SSID_PASS}
+      - SQLALCHEMY_DATABASE_URI=${SQLALCHEMY_DATABASE_URI}
+      - MQTT_IP=${MQTT_IP}
+      - MQTT_PORT=${MQTT_PORT}
+      - CA_CERT_PATH=${CA_CERT_PATH}
+    depends_on:
+      - iot_db
+    networks:
+      - frontend
+      - backend
+    ports:
+      - 8883:8883
+    expose:
+      - 9191
+      - 8883
+
+  iot_db:
+    build: ./postgres
+    container_name: iot_db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - backend
+    expose:
+      - 5432
+
+volumes:
+  postgres_data:
+
+networks:
+  frontend:
+  backend:
