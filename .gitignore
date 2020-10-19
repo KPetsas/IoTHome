@@ -1,6 +1,17 @@
+## BACKEND API & MQTT
+
+# Certificates
+backend/mqtt/certs/
+
+# python
 *__pycache__/
 *pyc
+
+# sqlite test DB
 *.db
-.env
-.env_dev
-node_modules
+
+# misc
+sample.env
+*.env
+*.env_dev
+
