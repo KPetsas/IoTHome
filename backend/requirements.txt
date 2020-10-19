@@ -1,0 +1,10 @@
+Flask
+flask-restful
+flask-jwt-extended
+flask-sqlalchemy
+SQLAlchemy-serializer
+passlib
+paho-mqtt
+gunicorn
+
+flask-cors
