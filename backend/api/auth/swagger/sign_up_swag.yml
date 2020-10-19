@@ -1,0 +1,23 @@
+User registration.
+---
+tags:
+  - Authentication
+description: Register a new user.
+parameters:
+  - name: username
+    in: formData
+    type: string
+    required: true
+  - name: email
+    in: formData
+    type: string
+    required: true
+  - name: password
+    in: formData
+    type: string
+    required: true
+responses:
+  201:
+    description: User successfully registered in DB.
+  400:
+    description: User failed to register.

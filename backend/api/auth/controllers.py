@@ -2,6 +2,7 @@ import config
 
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_refresh_token_required, get_jwt_identity
+from flasgger import swag_from
 
 from app_initialization import app, devices_cache
 from auth.models import UserModel
@@ -16,6 +17,7 @@ parser.add_argument('password', help='This field cannot be blank', required=True
 class UserRegistration(Resource):
     """ User registration controller. """
 
+    @swag_from('swagger/sign_up_swag.yml')
     def post(self):
         # Parse the data from the POST request.
         data = parser.parse_args()
@@ -50,6 +52,7 @@ class UserRegistration(Resource):
 class UserLogin(Resource):
     """ User login controller. """
 
+    @swag_from('swagger/login_swag.yml')
     def post(self):
         # Parse the data from the POST request.
         data = parser.parse_args()
@@ -84,6 +87,7 @@ class TokenRefresh(Resource):
     """
 
     @jwt_refresh_token_required
+    @swag_from('swagger/refresh_token_swag.yml')
     def post(self):
         """ POST method that requires the JWT refresh token, in order to return the new access token. """
         # Get username from JWT.

@@ -1,0 +1,18 @@
+Returns a list with the user devices (requires JWT).
+---
+tags:
+  - User Devices
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: "Login first. Then type in the *'Authorization'* input box: **Bearer &lt;JWT&gt;**, where &lt;JWT&gt; is the access token."
+    default: "Bearer "
+responses:
+  200:
+    description: JSON response with devices list.
+  401:
+    description: No JWT provided, unauthorized access is prohibited.
+  422:
+    description: Invalid Authorization Header.

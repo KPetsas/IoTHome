@@ -2,6 +2,7 @@ import config
 
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flasgger import swag_from
 
 from app_initialization import app, devices_cache
 from auth.models import UserModel
@@ -13,6 +14,7 @@ class Devices(Resource):
     """ Devices controller. """
 
     @jwt_required
+    @swag_from('swagger/devices_swag.yml')
     def get(self):
         """ POST request that requires JWT. """
 

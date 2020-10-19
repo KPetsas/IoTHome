@@ -7,6 +7,7 @@ import logging
 import config
 
 from flask import Flask, Blueprint
+from flasgger import Swagger
 from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
@@ -51,6 +52,8 @@ CORS(app)
 jwt = JWTManager(app)
 db = SQLAlchemy(app)
 
+if config.SWAGGER_ENABLED:
+    swagger = Swagger(app)
 
 # Initialize cache.
 devices_cache = DevicesCache(app) if config.CACHE_ENABLED else None

@@ -7,3 +7,6 @@
 2. $ source .env_dev
 3. $ flask run --host=0.0.0.0 --port=9191
 ```
+
+## Swagger
+Swagger is available at the */apidocs* endpoint. E.g. http://localhost:9191/apidocs/

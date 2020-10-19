@@ -2,6 +2,7 @@ import config
 
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flasgger import swag_from
 
 from app_initialization import app, devices_cache
 from auth.models import UserModel
@@ -24,6 +25,7 @@ class UserDeviceRegistration(Resource):
         self._parser.add_argument('mqtt_topic', help='This field cannot be blank', required=True)
 
     @jwt_required
+    @swag_from('swagger/user_devices_swag.yml')
     def post(self):
         """ POST request that requires JWT. """
 

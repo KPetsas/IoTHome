@@ -1,0 +1,30 @@
+Returns the status of the device (on/off) (requires JWT).
+---
+tags:
+  - Services
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: "Login first. Then type in the *'Authorization'* input box: **Bearer &lt;JWT&gt;**, where &lt;JWT&gt; is the access token."
+    default: "Bearer "
+  - name: device_ui_id
+    in: path
+    type: string
+    required: true
+    description: "The unique verbal device ID, also used in the frontend."
+  - name: action
+    in: path
+    type: string
+    required: true
+    description: "Action can be **status** (returns cached values) or **refresh_status** (returns values saved in DB)."
+responses:
+  200:
+    description: JSON response with status=200 and message='The door has opened.'
+  401:
+    description: No JWT provided, unauthorized access is prohibited.
+  404:
+    description: Invalid URL or device_ui_id.
+  422:
+    description: Invalid Authorization Header.

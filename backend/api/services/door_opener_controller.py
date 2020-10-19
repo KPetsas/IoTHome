@@ -2,6 +2,7 @@ import constants
 
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required
+from flasgger import swag_from
 
 from run import mqtt
 from app_initialization import app
@@ -11,6 +12,7 @@ from app_initialization import app
 class DoorOpener(Resource):
     """ This service is responsible for opening the building door. """
     @jwt_required
+    @swag_from('swagger/door_opener_swag.yml')
     def get(self):
         """ GET request that requires JWT. """
         app.logger.info("Opening the building door.")

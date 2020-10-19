@@ -1,0 +1,19 @@
+User login.
+---
+tags:
+  - Authentication
+description: Register a new user.
+parameters:
+  - name: username
+    in: formData
+    type: string
+    required: true
+  - name: password
+    in: formData
+    type: string
+    required: true
+responses:
+  200:
+    description: User logged in successfully.
+  401:
+    description: User failed to login.

@@ -1,0 +1,56 @@
+Device registration (requires JWT).
+---
+tags:
+  - User Devices
+description: Register a new device and relate it to a user.
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: "Login first. Then type in the *'Authorization'* input box: **Bearer &lt;JWT&gt;**, where &lt;JWT&gt; is the access token."
+    default: "Bearer "
+  - name: device_ui_id
+    in: formData
+    type: string
+    required: true
+    description: e.g. smart_socket
+  - name: name
+    in: formData
+    type: string
+    required: true
+    description: e.g. Smart Socket
+  - name: state
+    in: formData
+    type: string
+    required: true
+    description: e.g. online
+  - name: status
+    in: formData
+    type: string
+    required: true
+    description: e.g. off
+  - name: switch_state
+    in: formData
+    type: boolean
+    required: true
+    description: e.g. false (which means off)
+  - name: button_type
+    in: formData
+    type: string
+    required: true
+    description: e.g. switch
+  - name: mqtt_topic
+    in: formData
+    type: string
+    required: true
+    description: e.g. esp8266/socket
+responses:
+  200:
+    description: JSON response with result.
+  201:
+    description: New device created successfully.
+  401:
+    description: No JWT provided, unauthorized access is prohibited.
+  422:
+    description: Invalid Authorization Header.

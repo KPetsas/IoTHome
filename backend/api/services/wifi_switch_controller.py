@@ -5,6 +5,7 @@ import constants
 
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flasgger import swag_from
 
 from run import mqtt
 from app_initialization import app, devices_cache
@@ -23,6 +24,7 @@ class WifiSwitchAction(Resource):
         self._parser.add_argument('action', help='This field cannot be blank', required=True)
 
     @jwt_required
+    @swag_from('swagger/wifi_switch_action_swag.yml')
     def put(self):
         """ PUT request that requires JWT to update device. """
 
@@ -94,6 +96,7 @@ class WifiSwitchStatus(Resource):
     """ Get the status of the device. """
 
     @jwt_required
+    @swag_from('swagger/wifi_switch_status_swag.yml')
     def get(self, device_ui_id, action):
         """ GET request that requires JWT to retrieve device data for user. """
 

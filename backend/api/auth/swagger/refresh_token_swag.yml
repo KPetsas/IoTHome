@@ -1,0 +1,16 @@
+Generates a new access token after expiration (requires refresh JWT).
+---
+tags:
+  - Authentication
+parameters:
+  - name: Authorization
+    in: header
+    type: string
+    required: true
+    description: "Type in the *'Authorization'* input box: **Bearer &lt;JWT&gt;**, where &lt;JWT&gt; is the **refresh token**."
+    default: "Bearer "
+responses:
+  200:
+    description: JSON response with the new access_token.
+  401:
+    description: No JWT provided, unauthorized access is prohibited.
