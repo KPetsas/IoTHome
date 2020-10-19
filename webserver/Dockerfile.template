@@ -1,0 +1,15 @@
+FROM balenalib/raspberry-pi-debian
+
+RUN install_packages nginx
+
+# Set our working directory
+WORKDIR /usr/src/app
+
+# Enable udevd so that plugged dynamic hardware devices show up in our container.
+# ENV UDEV=1
+
+# Set up Nginx and frontend build for static serve.
+COPY ./frontend/build/ /usr/share/nginx/html/
+
+# The following will run when the container starts up on the device.
+CMD ["nginx","-g","daemon off;"]
