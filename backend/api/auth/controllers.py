@@ -77,7 +77,7 @@ class UserLogin(Resource):
                 refresh_token=refresh_token,
             )
         else:
-            return (dict(message='User login failed.'), 401)
+            return (dict(message='User login failed.', status=401))
 
 
 class TokenRefresh(Resource):

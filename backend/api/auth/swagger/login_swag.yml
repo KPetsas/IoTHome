@@ -15,5 +15,3 @@ parameters:
 responses:
   200:
     description: User logged in successfully.
-  401:
-    description: User failed to login.
