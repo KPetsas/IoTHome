@@ -8,3 +8,5 @@ paho-mqtt
 gunicorn
 
 flask-cors
+
+flasgger

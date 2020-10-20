@@ -1,0 +1,17 @@
+FROM balenalib/raspberry-pi
+
+RUN install_packages postgresql-11 libpq-dev postgresql-client-11 postgresql-client-common
+
+# Adjust PostgreSQL configuration so that remote connections to the database are possible.
+RUN echo "host  all  all  0.0.0.0/0  md5" >> /etc/postgresql/11/main/pg_hba.conf
+
+# Add `listen_addresses` to `/etc/postgresql/11/main/postgresql.conf`
+RUN echo "listen_addresses='*'" >> /etc/postgresql/11/main/postgresql.conf
+
+# Use postgres user when entrering the container.
+USER postgres
+
+COPY ./docker-entrypoint.sh /tmp/
+
+# Run docker-entrypoint.sh.
+CMD ["/bin/bash","/tmp/docker-entrypoint.sh"]

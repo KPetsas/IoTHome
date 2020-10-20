@@ -16,7 +16,10 @@ sample.env
 *.env_dev
 
 
-## FRONTEND
+## NGINX & FRONTEND
+
+# Nginx Certificates
+webserver/nginx/certs/
 
 # Frontend dependencies
 webserver/frontend/node_modules/
