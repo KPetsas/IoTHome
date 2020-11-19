@@ -38,58 +38,42 @@ class WifiSwitchAction(Resource):
         device_ui_id = args.get('device_ui_id')
         action = args.get('action')
 
+        # Handle on/off actions.
+        return self._device_switch_util(current_user.id, device_ui_id, action)
+
+    @staticmethod
+    def _device_switch_util(user_id, device_ui_id, device_status):
+        """
+        Common function to switch on/off device.
+
+        :param (int) user_id: The user ID.
+        :param (str) device_id: The lectical device unique ID.
+        :param (str) mqtt_topic: The MQTT topic of the device.
+        :param (str) device_status: The status to switch the device (on/off)
+        """
         # Retrieve the related MQTT topic.
         mqtt_topic = DeviceModel.find_device_mqtt_topic(device_ui_id)
         if not mqtt_topic:
             return (dict(message='ERROR: Invalid device_ui_id. No related MQTT topic found.'), 404)
 
-        # User requested to turn the device ON.
-        if action == constants.DEVICE_STATUS_ON:
-            app.logger.info("Switch on smart socket.")
-            mqtt.mqttc.publish(mqtt_topic, constants.START_DEVICE)
-
-            fields_dict_to_update = dict(switch_state=constants.DEVICE_STATUS_SWITCH.get(
-                constants.DEVICE_STATUS_ON), status=constants.DEVICE_STATUS_ON)
-
-            if config.CACHE_ENABLED:
-                devices_cache.update_cache(current_user.id, device_ui_id, fields_dict_to_update)
-
-            return DeviceModel.update_device(device_ui_id, fields_dict_to_update)
-
-        # User requested to turn the device OFF.
-        if action == constants.DEVICE_STATUS_OFF:
-            app.logger.info("Switch off smart socket.")
-            mqtt.mqttc.publish(mqtt_topic, constants.CLOSE_DEVICE)
-
-            fields_dict_to_update = dict(switch_state=constants.DEVICE_STATUS_SWITCH.get(
-                constants.DEVICE_STATUS_OFF), status=constants.DEVICE_STATUS_OFF)
-
-            if config.CACHE_ENABLED:
-                devices_cache.update_cache(current_user.id, device_ui_id, fields_dict_to_update)
-
-            return DeviceModel.update_device(device_ui_id, fields_dict_to_update)
-
         # User requested to toggle the status of the device.
-        if action == constants.DEVICE_TOGGLE:
+        if device_status == constants.DEVICE_TOGGLE:
             app.logger.info("Toggle smart socket.")
+            # Retrieve current device status.
             device_status = DeviceModel.find_device_status(device_ui_id)
+            # Toggle status.
+            device_status = constants.DEVICE_TOGGLE_SWITCH.get(device_status)
 
-            if device_status == constants.DEVICE_STATUS_SWITCH.get(constants.DEVICE_SWITCH_STATE_ON):
-                mqtt.mqttc.publish(mqtt_topic, constants.CLOSE_DEVICE)
-                status = constants.DEVICE_STATUS_OFF
-            else:
-                mqtt.mqttc.publish(mqtt_topic, constants.START_DEVICE)
-                status = constants.DEVICE_STATUS_ON
+        app.logger.info("Switch {} smart socket.".format(device_status))
+        mqtt.mqttc.publish(mqtt_topic, constants.DEVICE_STATUS_CODE.get(device_status))
 
-            fields_dict_to_update = dict(
-                switch_state=constants.DEVICE_STATUS_SWITCH.get(status), status=status)
+        fields_dict_to_update = dict(switch_state=constants.DEVICE_STATUS_SWITCH.get(
+            device_status), status=device_status)
 
-            if config.CACHE_ENABLED:
-                devices_cache.update_cache(current_user.id, device_ui_id, fields_dict_to_update)
+        if config.CACHE_ENABLED:
+            devices_cache.update_cache(user_id, device_ui_id, fields_dict_to_update)
 
-            return DeviceModel.update_device(device_ui_id, fields_dict_to_update)
-
-        return (dict(message='ERROR: Invalid URL.'), 404)
+        return DeviceModel.update_device(device_ui_id, fields_dict_to_update)
 
 
 class WifiSwitchStatus(Resource):
