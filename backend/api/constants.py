@@ -36,3 +36,6 @@ UPDATE_SSID_PASS_TOPIC = 'esp8266/ssid/passwd'
 DEVICES_STATUS_TOPIC = 'esp8266/socket/status'
 
 DOOR_TOPIC = 'esp8266/door'
+
+# Datetime comma separated values.
+DATETIME_CSV = ('year', 'month', 'day', 'hours', 'minutes', 'seconds')

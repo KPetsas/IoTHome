@@ -3,6 +3,7 @@ flask-restful
 flask-jwt-extended
 flask-sqlalchemy
 SQLAlchemy-serializer
+apscheduler
 passlib
 paho-mqtt
 gunicorn

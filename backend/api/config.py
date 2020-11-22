@@ -19,4 +19,6 @@ SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI", "sqlite:///a
 SECRET_KEY = os.environ.get("SECRET_KEY")
 JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
 
+TIMEZONE = os.environ.get("TIMEZONE", 'Europe/Athens')
+
 SWAGGER_ENABLED = os.environ.get("SWAGGER_ENABLED", not PRODUCTION)
