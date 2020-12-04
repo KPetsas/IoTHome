@@ -4,8 +4,7 @@ from flask_restful import Resource
 from flask_jwt_extended import jwt_required
 from flasgger import swag_from
 
-from run import mqtt
-from app_initialization import app
+from initialization import logger, mqtt
 
 
 # EXAMPLE URL: http://192.168.1.50:9191/api/door_opener
@@ -15,6 +14,6 @@ class DoorOpener(Resource):
     @swag_from('swagger/door_opener_swag.yml')
     def get(self):
         """ GET request that requires JWT. """
-        app.logger.info("Opening the building door.")
+        logger.info("Opening the building door.")
         mqtt.mqttc.publish(constants.DOOR_TOPIC, "1")
         return dict(status=200, message='Opening the building door...')

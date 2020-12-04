@@ -1,4 +1,4 @@
-from app_initialization import db
+from initialization import db
 
 
 class UserDevice():

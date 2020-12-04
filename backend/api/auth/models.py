@@ -1,6 +1,6 @@
 from passlib.hash import pbkdf2_sha256 as sha256
 
-from app_initialization import db
+from initialization import db
 from base_model import BaseModel
 
 

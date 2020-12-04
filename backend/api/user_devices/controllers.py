@@ -1,10 +1,10 @@
-import config
+import configuration.settings as config
 
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
 
-from app_initialization import app, devices_cache
+from initialization import logger, devices_cache
 from auth.models import UserModel
 from devices.models import DeviceModel
 from user_devices.models import UserDevice
@@ -70,5 +70,5 @@ class UserDeviceRegistration(Resource):
                 new_device.save_to_db()
                 return (dict(message='Device {} was added for user {}'.format(data['device_ui_id'], username)), 201)
             except Exception as e:
-                app.logger.error(e)
+                logger.error(e)
                 return (dict(message='Something went wrong'), 500)

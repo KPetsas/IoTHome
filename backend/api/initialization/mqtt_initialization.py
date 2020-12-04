@@ -1,16 +1,13 @@
 import paho.mqtt.client as mqtt
 
-import config
+import configuration.settings as config
 import constants
-
-from app_initialization import devices_cache
-from devices.models import DeviceModel
 
 
 class MQTT():
     """ Initialize the MQTT client. """
 
-    def __init__(self, app):
+    def init_app(self, app):
         self._logger = app.logger
 
         self._logger.info("Initialize MQTT client: Connecting to %s:%s." %
@@ -37,10 +34,6 @@ class MQTT():
         mqtt_message = msg.payload.decode()
         self._logger.info("MQTT client received message: {}".format(mqtt_message))
         mqtt_message_status = mqtt_message.get('status')
-        if mqtt_message_status in [constants.DEVICE_STATUS_ON, constants.DEVICE_STATUS_OFF]:
-            if config.CACHE_ENABLED:
-                # Reload cache to update/sync all users devices.
-                devices_cache.clear_cache()
-
-            DeviceModel.update_device(mqtt_message.get('device_ui_id'), dict(
-                switch_state=constants.DEVICE_STATUS_SWITCH.get(mqtt_message_status), status=mqtt_message_status), return_obj=False)
+        # if mqtt_message_status in [constants.DEVICE_STATUS_ON, constants.DEVICE_STATUS_OFF]:
+        # DeviceModel.update_device(mqtt_message.get('device_ui_id'), dict(
+        #    switch_state=constants.DEVICE_STATUS_SWITCH.get(mqtt_message_status), status=mqtt_message_status), return_obj=False)

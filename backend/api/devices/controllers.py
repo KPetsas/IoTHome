@@ -1,10 +1,10 @@
-import config
+import configuration.settings as config
 
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
 
-from app_initialization import app, devices_cache
+from initialization import logger, devices_cache
 from auth.models import UserModel
 from devices.models import DeviceModel
 
@@ -18,7 +18,7 @@ class Devices(Resource):
     def get(self):
         """ POST request that requires JWT. """
 
-        app.logger.info("Get a list of the user devices.")
+        logger.info("Get a list of the user devices.")
 
         # Retrieve the username from the JWT and find the current user from DB.
         current_user = UserModel.find_by_username(get_jwt_identity())

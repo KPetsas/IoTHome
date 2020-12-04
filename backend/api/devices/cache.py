@@ -10,7 +10,7 @@ class DevicesCache():
     {'pk': 2, '1': '0o1', '0o1': [{'name': 'Smart Socket', 'switch_state': False, 'device_ui_id': 'smart_socket', 'state': 'online', 'status': 'off'}]}
     """
 
-    def __init__(self, app):
+    def init_app(self, app):
         """ Constructor initializations. """
         self._INITIAL_PRIMARY_KEY = 1  # decimal 1 to octal is 001 in ASCII table
 

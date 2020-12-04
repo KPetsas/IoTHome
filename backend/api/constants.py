@@ -2,6 +2,12 @@
 This module contains the constants of the application.
 """
 
+CONFIGURATION_DIR = "configuration"
+FLASK_CONFIGURATION_FILE = "flask.config"
+
+LOG_FORMAT = "%(asctime)s %(levelname)s: %(message)s"
+LOG_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
+
 _DEVICE_SWITCH_STATE_ON = True
 _DEVICE_SWITCH_STATE_OFF = False
 DEVICE_STATUS_ON = "on"
@@ -29,12 +35,9 @@ DEVICE_STATUS_CODE = dict()
 DEVICE_STATUS_CODE[DEVICE_STATUS_ON] = _START_DEVICE
 DEVICE_STATUS_CODE[DEVICE_STATUS_OFF] = _CLOSE_DEVICE
 
-# MQTT TOPICS
+# MQTT TOPICS. Aligned with devices' firmware.
 UPDATE_SSID_PASS_TOPIC = 'esp8266/ssid/passwd'
-
-# Aligned with devices firmware.
 DEVICES_STATUS_TOPIC = 'esp8266/socket/status'
-
 DOOR_TOPIC = 'esp8266/door'
 
 # Datetime comma separated values.

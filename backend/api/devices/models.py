@@ -1,6 +1,6 @@
 from sqlalchemy_serializer import SerializerMixin
 
-from app_initialization import db, app
+from initialization import logger, db
 from base_model import BaseModel
 from user_devices.models import UserDevice
 
@@ -44,7 +44,7 @@ class DeviceModel(BaseModel, SerializerMixin):
         :param (bool) return_obj: Optional, flag to return the device model or not.
         :return: DeviceModel
         """
-        app.logger.debug("DB: Update the device model and save it in DB.")
+        logger.debug("DB: Update the device model and save it in DB.")
         device = cls.__find_by_device_ui_id(device_ui_id)
         device.update(fields_dict)
         db.session.commit()
@@ -59,7 +59,7 @@ class DeviceModel(BaseModel, SerializerMixin):
         :param (int) user_id: The current user id.
         :return: list of user devices.
         """
-        app.logger.debug("DB: Retrieve all user devices from DB.")
+        logger.debug("DB: Retrieve all user devices from DB.")
         all_user_devices = cls.query.join(cls.user).filter_by(id=user_id).all()
         return list(map(lambda device_data: device_data.to_dict(), all_user_devices))
 
@@ -71,7 +71,7 @@ class DeviceModel(BaseModel, SerializerMixin):
         :param (str) device_ui_id: The unique device id used in UI.
         :param (str) user: The username of the user.
         """
-        app.logger.debug("DB: Find if user has device.")
+        logger.debug("DB: Find if user has device.")
         return cls.__find_by_device_ui_id(device_ui_id).join(cls.user).filter_by(username=user).first()
 
     @classmethod
@@ -82,7 +82,7 @@ class DeviceModel(BaseModel, SerializerMixin):
         :param (str) device_ui_id: The unique device id used in UI.
         :return: (int) device id.
         """
-        app.logger.debug("DB: Retrieve the device ID from DB.")
+        logger.debug("DB: Retrieve the device ID from DB.")
         device = cls.__find_by_device_ui_id(device_ui_id).first()
         return device.id if device else device
 
@@ -94,7 +94,7 @@ class DeviceModel(BaseModel, SerializerMixin):
         :param (str) device_ui_id: The unique device id used in UI.
         :return: (str) mqtt topic.
         """
-        app.logger.debug("DB: Retrieve the device MQTT topic from DB.")
+        logger.debug("DB: Retrieve the device MQTT topic from DB.")
         device = cls.__find_by_device_ui_id(device_ui_id).first()
         return device.mqtt_topic if device else device
 
@@ -106,7 +106,7 @@ class DeviceModel(BaseModel, SerializerMixin):
         :param (str) device_ui_id: The unique device id used in UI.
         :return: (str) device status.
         """
-        app.logger.debug("DB: Retrieve the device status from DB.")
+        logger.debug("DB: Retrieve the device status from DB.")
         device = cls.__find_by_device_ui_id(device_ui_id).first()
         return device.status if device else device
 

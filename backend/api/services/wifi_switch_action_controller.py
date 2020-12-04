@@ -1,4 +1,4 @@
-import config
+import configuration.settings as config
 import constants
 
 from datetime import datetime
@@ -7,8 +7,7 @@ from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
 
-from run import mqtt, scheduler
-from app_initialization import app, devices_cache
+from initialization import logger, scheduler, devices_cache, mqtt
 from auth.models import UserModel
 from devices.models import DeviceModel
 
@@ -45,7 +44,7 @@ class WifiSwitchAction(Resource):
     def put(self):
         """ PUT request that requires JWT to update device. """
 
-        app.logger.debug("Resource WifiSwitchAction to update device with PUT.")
+        logger.debug("Resource WifiSwitchAction to update device with PUT.")
 
         # Retrieve the username from the JWT and find the current user from DB.
         current_user = UserModel.find_by_username(get_jwt_identity())
@@ -61,7 +60,7 @@ class WifiSwitchAction(Resource):
     def post(self):
         """ POST request that requires JWT to schedule timer or set specific time to change the state of a device. """
 
-        app.logger.info("Resource WifiSwitchAction to set timer for device with POST.")
+        logger.info("Resource WifiSwitchAction to set timer for device with POST.")
 
         # Retrieve the username from the JWT and find the current user from DB.
         current_user = UserModel.find_by_username(get_jwt_identity())
@@ -86,7 +85,7 @@ class WifiSwitchAction(Resource):
         args = self._parser.parse_args()
 
         # Remove the scheduled job.
-        scheduler.remove_job(args.get('device_ui_id'))
+        scheduler.instance.remove_job(args.get('device_ui_id'))
 
     @classmethod
     def _date_scheduler(cls, user_id, request_args):
@@ -96,11 +95,11 @@ class WifiSwitchAction(Resource):
         :param (int) user_id: The user ID.
         :param (dict) request_args: The request arguments.
         """
-        scheduler.add_job(cls._device_switch_util, args=(user_id, request_args.get('device_ui_id'), request_args.get('action')),
-                          trigger=request_args.get('trigger'),
-                          run_date=datetime(request_args.get('year'), request_args.get('month'), request_args.get('day'),
-                                            request_args.get('hours'), request_args.get('minutes'), request_args.get('seconds')),
-                          id=request_args.get('device_ui_id'), replace_existing=True)
+        scheduler.instance.add_job(cls._device_switch_util, args=(user_id, request_args.get('device_ui_id'), request_args.get('action')),
+                                   trigger=request_args.get('trigger'),
+                                   run_date=datetime(request_args.get('year'), request_args.get('month'), request_args.get('day'),
+                                                     request_args.get('hours'), request_args.get('minutes'), request_args.get('seconds')),
+                                   id=request_args.get('device_ui_id'), replace_existing=True)
 
     @classmethod
     def _interval_scheduler(cls, user_id, request_args):
@@ -110,10 +109,10 @@ class WifiSwitchAction(Resource):
         :param (int) user_id: The user ID.
         :param (dict) request_args: The request arguments.
         """
-        scheduler.add_job(cls._device_switch_util, args=(user_id, request_args.get('device_ui_id'), request_args.get('action')),
-                          trigger=request_args.get('trigger'), weeks=request_args.get('week') or 0, days=request_args.get('day') or 0,
-                          hours=request_args.get('hours') or 0, minutes=request_args.get('minutes') or 0, seconds=request_args.get('seconds') or 0,
-                          start_date=request_args.get('start_date'), end_date=request_args.get('end_date'), id=request_args.get('device_ui_id'), replace_existing=True)
+        scheduler.instance.add_job(cls._device_switch_util, args=(user_id, request_args.get('device_ui_id'), request_args.get('action')),
+                                   trigger=request_args.get('trigger'), weeks=request_args.get('week') or 0, days=request_args.get('day') or 0,
+                                   hours=request_args.get('hours') or 0, minutes=request_args.get('minutes') or 0, seconds=request_args.get('seconds') or 0,
+                                   start_date=request_args.get('start_date'), end_date=request_args.get('end_date'), id=request_args.get('device_ui_id'), replace_existing=True)
 
     @classmethod
     def _cron_scheduler(cls, user_id, request_args):
@@ -123,11 +122,11 @@ class WifiSwitchAction(Resource):
         :param (int) user_id: The user ID.
         :param (dict) request_args: The request arguments.
         """
-        scheduler.add_job(cls._device_switch_util, args=(user_id, request_args.get('device_ui_id'), request_args.get('action')),
-                          trigger=request_args.get('trigger'), year=request_args.get('year'), month=request_args.get('month'),
-                          day=request_args.get('day'), week=request_args.get('week'), day_of_week=request_args.get('day_of_week'),
-                          hour=request_args.get('hours'), minute=request_args.get('minutes'), second=request_args.get('seconds'),
-                          start_date=request_args.get('start_date'), end_date=request_args.get('end_date'), id=request_args.get('device_ui_id'), replace_existing=True)
+        scheduler.instance.add_job(cls._device_switch_util, args=(user_id, request_args.get('device_ui_id'), request_args.get('action')),
+                                   trigger=request_args.get('trigger'), year=request_args.get('year'), month=request_args.get('month'),
+                                   day=request_args.get('day'), week=request_args.get('week'), day_of_week=request_args.get('day_of_week'),
+                                   hour=request_args.get('hours'), minute=request_args.get('minutes'), second=request_args.get('seconds'),
+                                   start_date=request_args.get('start_date'), end_date=request_args.get('end_date'), id=request_args.get('device_ui_id'), replace_existing=True)
 
     @staticmethod
     def _device_switch_util(user_id, device_ui_id, device_status):
@@ -146,19 +145,23 @@ class WifiSwitchAction(Resource):
 
         # User requested to toggle the status of the device.
         if device_status == constants.DEVICE_TOGGLE:
-            app.logger.info("Toggle smart socket.")
+            logger.info("Toggle smart socket.")
             # Retrieve current device status.
             device_status = DeviceModel.find_device_status(device_ui_id)
             # Toggle status.
             device_status = constants.DEVICE_TOGGLE_SWITCH.get(device_status)
 
-        app.logger.info("Switch {} smart socket.".format(device_status))
+        logger.info("Switch {} smart socket.".format(device_status))
         mqtt.mqttc.publish(mqtt_topic, constants.DEVICE_STATUS_CODE.get(device_status))
 
         fields_dict_to_update = dict(switch_state=constants.DEVICE_STATUS_SWITCH.get(
             device_status), status=device_status)
 
         if config.CACHE_ENABLED:
+            if not devices_cache.get_user_cache(user_id):
+                # Get a list of the cached user devices.
+                devices_cache.cache = (user_id, DeviceModel.return_user_devices(user_id))
+
             devices_cache.update_cache(user_id, device_ui_id, fields_dict_to_update)
 
         return DeviceModel.update_device(device_ui_id, fields_dict_to_update)

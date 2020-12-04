@@ -1,10 +1,10 @@
-import config
+import configuration.settings as config
 
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_refresh_token_required, get_jwt_identity
 from flasgger import swag_from
 
-from app_initialization import app, devices_cache
+from initialization import logger, devices_cache
 from auth.models import UserModel
 
 # Set the request arguments to be expected.
@@ -45,7 +45,7 @@ class UserRegistration(Resource):
                 refresh_token=refresh_token
             ), 201)
         except Exception as e:
-            app.logger.error(e)
+            logger.error(e)
             return (dict(message='Something went wrong'), 400)
 
 

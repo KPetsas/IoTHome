@@ -1,4 +1,4 @@
-import config
+import configuration.settings as config
 
 from pytz import timezone
 
@@ -10,9 +10,11 @@ from apscheduler.executors.pool import ThreadPoolExecutor
 class Scheduler():
     """ Initialize Advanced Python Scheduler. """
 
-    def initialize(self, app):
+    def __init__(self):
+        self._scheduler = None
+
+    def init_app(self, app):
         app.logger.info("Initialize Advanced Python Scheduler.")
-        app.logger.info(app)
 
         user_timezone = timezone(config.TIMEZONE)
 
@@ -36,4 +38,8 @@ class Scheduler():
 
         # Start the scheduler.
         scheduler.start()
-        return scheduler
+        self._scheduler = scheduler
+
+    @property
+    def instance(self):
+        return self._scheduler
