@@ -2,6 +2,8 @@ Flask
 flask-restful
 flask-jwt-extended
 flask-sqlalchemy
+flask-migrate
+flask-script
 SQLAlchemy-serializer
 apscheduler
 passlib
