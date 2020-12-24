@@ -14,7 +14,7 @@
 5. $ python manage.py runserver --host=0.0.0.0 --port=9191
 
 ```
-*Note: create a migration repository with the command: ```$ python manage.py db init```*
+*Note: Before running the -migrate- and -upgrade- commands, create a migration repository with the command: ```$ python manage.py db init```, if the -migrations- directory does not already exist.*
 
 ## Swagger
 Swagger is available at the */apidocs* endpoint. E.g. http://localhost:9191/apidocs/

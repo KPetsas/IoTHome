@@ -29,6 +29,13 @@ The **React** frontend is a client from which the user can interact with the IoT
 - The IoT devices connect to the secure MQTT broker, only after verifying its certificate **fingerprint** (the firmware is not available in the GitHub repository).
 - The database container is in a **separate network** from the container with the Nginx web server and the frontend of the application, as defined in the docker-compose.yml.
 
+# Deploy
+To deploy use the Balena CLI and run the commands:
+- balena login
+- balena push <balena_application_name>
+
+*Note: This version is a ready to deploy on a Raspberry Pi Zero device with BalenaOS. Extra actions to do: 1. generate the mqtt certificates under backend/mqtt/certs directory, 2. generate nginx certificate and key under webserver/nginx/certs directory, 3. build the frontend and 4. exclude from .gitignore these generated files and directory.*
+
 ## Author
 
 * **Konstantinos Petsas**
