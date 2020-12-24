@@ -1,12 +1,10 @@
 # Base balena image for python.
-FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3-stretch-run
+# TODO: Check https://www.balena.io/docs/reference/base-images/base-images/ for run and build variants designed for multistage builds.
+FROM balenalib/raspberry-pi-python:3.6.12-buster-build
 
 # Use `install_packages` to install dependencies.
 RUN install_packages mosquitto
 RUN install_packages mosquitto-clients
-
-# Python postgresql connector.
-RUN install_packages python3-psycopg2
 
 # Set the working directory.
 WORKDIR /usr/src/app

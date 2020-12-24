@@ -1,11 +1,17 @@
 ## BACKEND API & MQTT
 
-# Certificates
+# Certificates - comment out when deploying with balena CLI.
 backend/mqtt/certs/
 
 # python
 *__pycache__/
 *pyc
+
+backend/.pytest_cache/
+
+backend/api.egg-info/
+backend/build/
+backend/dist/
 
 # sqlite test DB
 *.db
@@ -18,13 +24,13 @@ sample.env
 
 ## NGINX & FRONTEND
 
-# Nginx Certificates
+# Nginx Certificates - comment out when deploying with balena CLI.
 webserver/nginx/certs/
 
 # Frontend dependencies
 webserver/frontend/node_modules/
 
-# Frontend production build
+# Frontend production build - comment out when deploying with balena CLI.
 webserver/frontend/build/
 
 # misc
