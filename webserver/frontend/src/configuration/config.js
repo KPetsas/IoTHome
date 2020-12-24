@@ -1,6 +1,6 @@
 var config = module.exports = {};
 
-config.productionEnv = false;
+config.productionEnv = true;
 
 config.backend = {
   ip: '127.0.0.1',  // DEV
@@ -19,5 +19,6 @@ config.backend = {
 config.frontend = {
   loadingPageDuration: 500,
   alertAutoHideDuration: 4500,
+  cookieExpiresInDays: 7,  // cookie expires in 7 days.
   doorBtnLoadingDuration: 2500  // Same as device firmware 2.5 seconds.
 };

@@ -36,7 +36,7 @@ class Devices extends Component {
         headers: { 'Authorization': 'Bearer ' + Cookies.get('refresh_token') }
       })
       .then(tokenRefreshResponse => {
-        Cookies.set('token', tokenRefreshResponse.data.access_token)
+        Cookies.set('token', tokenRefreshResponse.data.access_token, { expires: config.frontend.cookieExpiresInDays })
         failedRequest.response.config.headers['Authorization'] = 'Bearer ' + tokenRefreshResponse.data.access_token;
         return Promise.resolve();
       }).catch(error => {

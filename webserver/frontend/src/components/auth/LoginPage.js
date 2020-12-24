@@ -67,8 +67,8 @@ class LoginPage extends Component {
         setTimeout(
           function() {
             if (response.data.access_token !== undefined && response.data.status === 200) {
-              Cookies.set('token', response.data.access_token)
-              Cookies.set('refresh_token', response.data.refresh_token)
+              Cookies.set('token', response.data.access_token, { expires: config.frontend.cookieExpiresInDays })
+              Cookies.set('refresh_token', response.data.refresh_token, { expires: config.frontend.cookieExpiresInDays })
 
               // Set the state "loggedIn" in App.js
               this.props.parentCallback(!!response.data.access_token);
