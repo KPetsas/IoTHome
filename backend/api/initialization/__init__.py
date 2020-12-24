@@ -6,9 +6,6 @@ import os
 import pkgutil
 import importlib
 
-import configuration.settings as config
-import constants
-
 from flask import Flask, Blueprint
 from flask_cors import CORS
 from flask_restful import Api
@@ -17,11 +14,13 @@ from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 from flasgger import Swagger
 
-from initialization.logger_initialization import Logger
-from initialization.scheduler_initialization import Scheduler
-from initialization.mqtt_initialization import MQTT
-from router import Router
-from devices.cache import DevicesCache
+from api.configuration import settings as config
+from api import constants
+from api.initialization.logger_initialization import Logger
+from api.initialization.scheduler_initialization import Scheduler
+from api.initialization.mqtt_initialization import MQTT
+from api.router import Router
+from api.devices.cache import DevicesCache
 
 
 # Create the instances of the Flask extensions in the global scope.
@@ -51,10 +50,10 @@ def register_app_routes(create_app_func):
         app = create_app_func(main_module_name, config_file)
 
         # Application convention: Every application route is set in a routes.py module under its related package.
-        for loader, module_name, ispkg in pkgutil.iter_modules(path=[os.getcwd()]):
+        for loader, module_name, ispkg in pkgutil.iter_modules(path=[constants.APPLICATION_DIR]):
             if ispkg:
                 try:
-                    importlib.import_module('.routes', package=module_name)
+                    importlib.import_module('.routes', package='api.' + module_name)
                 except ImportError:
                     continue
 
@@ -77,7 +76,7 @@ def create_app(main_module_name, config_file):
     app = Flask(main_module_name)
 
     if config_file:
-        config_file = os.path.join(app.root_path,
+        config_file = os.path.join(constants.APPLICATION_DIR,
                                    constants.CONFIGURATION_DIR, config_file)
         app.config.from_pyfile(config_file)
 

@@ -1,5 +1,5 @@
-from devices import controllers
-from router import Router
+from api.devices import controllers
+from api.router import Router
 
 
 class DevicesRouter(Router):

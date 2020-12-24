@@ -1,4 +1,4 @@
-from initialization import db
+from api.initialization import db
 
 
 class UserDevice():

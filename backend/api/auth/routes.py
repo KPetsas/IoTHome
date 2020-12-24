@@ -1,5 +1,5 @@
-from auth import controllers
-from router import Router
+from api.auth import controllers
+from api.router import Router
 
 
 class AuthRouter(Router):

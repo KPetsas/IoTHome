@@ -1,8 +1,8 @@
 from sqlalchemy_serializer import SerializerMixin
 
-from initialization import logger, db
-from base_model import BaseModel
-from user_devices.models import UserDevice
+from api.initialization import logger, db
+from api.base_model import BaseModel
+from api.user_devices.models import UserDevice
 
 
 class DeviceModel(BaseModel, SerializerMixin):

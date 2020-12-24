@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 
-import configuration.settings as config
-import constants
+from api.configuration import settings as config
+from api import constants
 
 
 class MQTT():
@@ -16,6 +16,7 @@ class MQTT():
         # MQTT client for smart devices.
         self.mqttc = mqtt.Client()
         if config.CA_CERT_PATH:
+            self._logger.info("Set MQTT certificate: %s." % config.CA_CERT_PATH)
             self.mqttc.tls_set(config.CA_CERT_PATH)
         self.mqttc.connect(config.MQTT_IP, config.MQTT_PORT, 60)
 

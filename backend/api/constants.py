@@ -2,6 +2,10 @@
 This module contains the constants of the application.
 """
 
+import os
+
+
+APPLICATION_DIR = os.path.join(os.getcwd(), 'api')
 CONFIGURATION_DIR = "configuration"
 FLASK_CONFIGURATION_FILE = "flask.config"
 

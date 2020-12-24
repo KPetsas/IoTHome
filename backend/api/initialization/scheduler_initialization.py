@@ -1,10 +1,10 @@
-import configuration.settings as config
-
 from pytz import timezone
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.executors.pool import ThreadPoolExecutor
+
+from api.configuration import settings as config
 
 
 class Scheduler():

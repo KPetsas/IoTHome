@@ -1,11 +1,10 @@
-import configuration.settings as config
-
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_refresh_token_required, get_jwt_identity
 from flasgger import swag_from
 
-from initialization import logger, devices_cache
-from auth.models import UserModel
+from api.configuration import settings as config
+from api.initialization import logger, devices_cache
+from api.auth.models import UserModel
 
 # Set the request arguments to be expected.
 parser = reqparse.RequestParser()

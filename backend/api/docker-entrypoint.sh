@@ -2,7 +2,9 @@
 
 sudo service mosquitto start
 sleep 5
-cd api/
+sudo service mosquitto status
+
+# python setup.py install
 
 # Sync DB with the latest migrations.
 python manage.py db upgrade

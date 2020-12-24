@@ -1,6 +1,6 @@
-from router import Router
-from services import wifi_switch_action_controller, wifi_switch_status_controller, door_opener_controller
-# from services import *
+from api.router import Router
+from api.services import wifi_switch_action_controller, wifi_switch_status_controller, door_opener_controller
+# from api.services import *
 
 
 class ServicesRouter(Router):

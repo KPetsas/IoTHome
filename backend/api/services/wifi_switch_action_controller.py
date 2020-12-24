@@ -1,15 +1,14 @@
-import configuration.settings as config
-import constants
-
 from datetime import datetime
 
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
 
-from initialization import logger, scheduler, devices_cache, mqtt
-from auth.models import UserModel
-from devices.models import DeviceModel
+from api.configuration import settings as config
+from api import constants
+from api.initialization import logger, scheduler, devices_cache, mqtt
+from api.auth.models import UserModel
+from api.devices.models import DeviceModel
 
 
 # EXAMPLE URL: http://192.168.1.50:9191/api/wifi_switches

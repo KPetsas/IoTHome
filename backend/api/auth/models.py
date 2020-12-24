@@ -1,7 +1,7 @@
 from passlib.hash import pbkdf2_sha256 as sha256
 
-from initialization import db
-from base_model import BaseModel
+from api.initialization import db
+from api.base_model import BaseModel
 
 
 class UserModel(BaseModel):

@@ -1,5 +1,5 @@
-from user_devices import controllers
-from router import Router
+from api.user_devices import controllers
+from api.router import Router
 
 
 class UserDevicesRouter(Router):

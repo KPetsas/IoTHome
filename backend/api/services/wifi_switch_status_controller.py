@@ -1,15 +1,14 @@
 import time
 
-import configuration.settings as config
-import constants
-
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flasgger import swag_from
 
-from initialization import logger, devices_cache, mqtt
-from auth.models import UserModel
-from devices.models import DeviceModel
+from api.configuration import settings as config
+from api import constants
+from api.initialization import logger, devices_cache, mqtt
+from api.auth.models import UserModel
+from api.devices.models import DeviceModel
 
 
 class WifiSwitchStatus(Resource):

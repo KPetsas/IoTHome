@@ -1,10 +1,9 @@
-import constants
-
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required
 from flasgger import swag_from
 
-from initialization import logger, mqtt
+from api import constants
+from api.initialization import logger, mqtt
 
 
 # EXAMPLE URL: http://192.168.1.50:9191/api/door_opener
